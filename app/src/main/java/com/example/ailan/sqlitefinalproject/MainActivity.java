@@ -16,35 +16,60 @@ public class MainActivity extends AppCompatActivity
 {
 
     MessageOpenHelper coh;
+    AccountOpenHelper aoh;
+
     ArrayList<Message> listOfMessage;
-    ListView lv;
-    int mosh;
+    ArrayList<Account> listOfAccount;
+
+    ListView lv , lv2;
 
     MessageAdapter messageAdapter;
+    AccountAdapter accountAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lv=(ListView)findViewById(R.id.lv);
+        listOfMessage=new ArrayList<Message>();
+        listOfAccount=new ArrayList<Account>();
 
         coh=new MessageOpenHelper(this);
-        listOfMessage=new ArrayList<Message>();
+        aoh=new AccountOpenHelper(this);
 
-        Log.d("mosh", "list size is " + listOfMessage.size());
-        Log.d("mosh", MessageOpenHelper.CREATE_TABLE_MESSAGE);
+        lv=(ListView)findViewById(R.id.lv);
+        lv2=(ListView)findViewById(R.id.lv2);
 
-        createMessages();
+        Log.d("Account", "list size is " + listOfAccount.size());
+        Log.d("Account", AccountOpenHelper.CREATE_TABLE_ACCOUNT);
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-        Log.d("size" , "size :" + width + " " + height);
-        int mosh = this.getWindow().getDecorView().getBottom();
-        Log.d("size" , "size :" + mosh);
+        Log.d("Message", "list size is " + listOfMessage.size());
+        Log.d("Message", MessageOpenHelper.CREATE_TABLE_MESSAGE);
+
+        coh.open();
+        listOfMessage=coh.getAllmessages();
+        coh.close();
+
+        if(listOfMessage.size()==0)
+        {
+            createMessages();
+        }
+        createAccounts();
+        messageAdapter=new MessageAdapter(this,0,listOfMessage);
+        lv.setAdapter(messageAdapter);
+
+
+        aoh.open();
+        listOfAccount=aoh.getAllAccounts();
+        aoh.close();
+
+        if (listOfAccount.size()==0)
+        {
+            createAccounts();
+        }
+        accountAdapter=new AccountAdapter(this, 0,listOfAccount);
+        lv2.setAdapter(accountAdapter);
+
 
     }
 
@@ -71,5 +96,23 @@ public class MainActivity extends AppCompatActivity
         c2=coh.createMessage(c2);
         listOfMessage.add(c2);
         coh.close();
+        Log.d("Message", "list size is " + listOfMessage.size());
+    }
+
+    public void createAccounts()
+    {
+        aoh.open();
+        Account c1=new Account(0,"ilan" , "moshayev", "amira2510", "ilan132465@walla.com", "Ujhsk25a4f");
+        c1=aoh.createAccount(c1);
+        listOfAccount.add(c1);
+
+        Account c2=new Account(0, "eli", "kozinets" , "elilike2eat" , "elikozinets@gmail.com" , "Ujmdda25w9");
+        c2=aoh.createAccount(c2);
+        listOfAccount.add(c2);
+        aoh.close();
+
+        Log.d("Account" , "list size is :" + listOfAccount.size());
+
+
     }
 }

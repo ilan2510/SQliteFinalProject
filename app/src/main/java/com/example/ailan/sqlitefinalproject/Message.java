@@ -20,6 +20,13 @@ public class Message {
         this.message = message;
         this.fromWhichChat = fromWhichChat;
     }
+    public Message(String msgSaveDay , String msgSaveHour , String message , String fromWhichChat)
+    {
+        this.msgSaveDay = msgSaveDay;
+        this.msgSaveHour = msgSaveHour;
+        this.message = message;
+        this.fromWhichChat = fromWhichChat;
+    }
     public long getmessageId()
     {
         return messageId;

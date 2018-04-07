@@ -2,9 +2,12 @@ package com.example.ailan.sqlitefinalproject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 /**
  * Created by ailan on 03/04/2018.
@@ -12,15 +15,15 @@ import android.util.Log;
 
 public class MessageOpenHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASENAME = "message.db2";
+    public static final String DATABASENAME = "message.db3";
     public static final String TABLE_MESSAGE = "tblmessage";
     public static final int DATABASEVERSION = 1;
 
-    public static final String COLUMN_ID = "messageID";
+    public static final String COLUMN_ID = "messageid";
     public static final String COLUMN_MESSAGE = "message";
-    public static final String COLUMN_SAVEDAY = "msgSaveDay";
-    public static final String COLUMN_SAVEHOUR = "msgSaveHour";
-    public static final String COLUMN_FROMCHAT = "fromWho";
+    public static final String COLUMN_SAVEDAY = "msgsaveday";
+    public static final String COLUMN_SAVEHOUR = "msgsavehour";
+    public static final String COLUMN_FROMCHAT = "fromwho";
 
     public static final String CREATE_TABLE_MESSAGE = "CREATE TABLE IF NOT EXISTS " +
             TABLE_MESSAGE + "(" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + COLUMN_MESSAGE + " VARCHAR," + COLUMN_SAVEDAY + " VARCHAR,"
@@ -54,21 +57,59 @@ public class MessageOpenHelper extends SQLiteOpenHelper {
 
     public void open() {
         database = this.getWritableDatabase();
-        Log.i("data", "Database connection open");
+        Log.i("Generalmsg", "Database connection open");
     }
 
     public Message createMessage(Message c) {
         ContentValues values = new ContentValues();
-        values.put(MessageOpenHelper.COLUMN_ID, c.getmessageId());
         values.put(MessageOpenHelper.COLUMN_MESSAGE, c.getMessage());
         values.put(MessageOpenHelper.COLUMN_SAVEDAY, c.getMsgSaveDay());
         values.put(MessageOpenHelper.COLUMN_SAVEHOUR, c.getMsgSaveHour());
         values.put(MessageOpenHelper.COLUMN_FROMCHAT, c.getFromWhichChat());
-
         long insertId = database.insert(MessageOpenHelper.TABLE_MESSAGE, null, values);
-        Log.i("data", "Customer " + insertId + "insert to database");
+        Log.i("jj", "Customer " + insertId + "insert to database");
         c.setmessageId(insertId);
         return c;
 
+    }
+
+    public ArrayList<Message> getAllmessages() {
+
+        ArrayList<Message> l = new ArrayList<Message>();
+        Cursor cursor = database.query(MessageOpenHelper.TABLE_MESSAGE, allColumns, null, null, null, null, null);
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                long id = cursor.getLong(cursor.getColumnIndex(MessageOpenHelper.COLUMN_ID));
+                String saveday = cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_SAVEDAY));
+                String savehour = cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_SAVEHOUR));
+                String message = cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_MESSAGE));
+                String fromwho = cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_FROMCHAT));
+                Message c = new Message(id, saveday, savehour, message, fromwho);
+                l.add(c);
+            }
+        }
+        return l;
+    }
+    public long deleteAllmsg()
+    {
+        return database.delete(MessageOpenHelper.TABLE_MESSAGE, null, null);
+    }
+
+
+    public long deleteCustomerByRow(long rowId)
+    {
+        return database.delete(MessageOpenHelper.TABLE_MESSAGE, MessageOpenHelper.COLUMN_ID + "=" + rowId, null);
+    }
+
+
+    public long updateByRowmsg(Message c)    /// i removed this command         values.put(CustomerOpenHelper.COLUMN_ID, c.getCustormerId());
+    {
+        ContentValues values=new ContentValues();
+        values.put(MessageOpenHelper.COLUMN_SAVEDAY, c.getMsgSaveDay());
+        values.put(MessageOpenHelper.COLUMN_SAVEHOUR, c.getMsgSaveHour());
+        values.put(MessageOpenHelper.COLUMN_MESSAGE, c.getMessage());
+        values.put(MessageOpenHelper.COLUMN_FROMCHAT, c.getFromWhichChat());
+        return database.update(MessageOpenHelper.TABLE_MESSAGE, values, MessageOpenHelper.COLUMN_ID +"=" + c.getmessageId(), null);
     }
 }

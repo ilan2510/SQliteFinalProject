@@ -24,6 +24,17 @@
         >
 
     </ListView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="45sp"
+        android:layout_gravity="center"
+        android:layout_weight="20"
+        android:background="#15e6a0"
+        android:gravity="center"
+        android:text="DataBase"
+        android:textColor="#000000"
+        android:textSize="40sp" />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="200dp"
