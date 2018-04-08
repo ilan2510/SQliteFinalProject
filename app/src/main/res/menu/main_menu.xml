@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_settings"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="setting"
+        tools:ignore="AppCompatResource" />
+    <item
+        android:id="@+id/menu_allcustomers"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+        android:title="all customers"/>
+    <item
+        android:id="@+id/menu_cheapcustomers"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="cheapers"
+        tools:ignore="AppCompatResource" />
+    <item
+        android:id="@+id/menu_richcustomers"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+        android:title="reachcustomers"/>
+
+    <item
+        android:id="@+id/menu_new"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+
+        android:title="New"/>
+
+</menu>

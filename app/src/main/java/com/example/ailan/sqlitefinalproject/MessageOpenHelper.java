@@ -97,13 +97,13 @@ public class MessageOpenHelper extends SQLiteOpenHelper {
     }
 
 
-    public long deleteCustomerByRow(long rowId)
+    public long deletemessagebyRow(long rowId)
     {
         return database.delete(MessageOpenHelper.TABLE_MESSAGE, MessageOpenHelper.COLUMN_ID + "=" + rowId, null);
     }
 
 
-    public long updateByRowmsg(Message c)    /// i removed this command         values.put(CustomerOpenHelper.COLUMN_ID, c.getCustormerId());
+    public long updateByRowmsg(Message c)    /// i removed this command         values.put(MessageOpenHelper.COLUMN_ID, c.getCustormerId());
     {
         ContentValues values=new ContentValues();
         values.put(MessageOpenHelper.COLUMN_SAVEDAY, c.getMsgSaveDay());
@@ -112,4 +112,25 @@ public class MessageOpenHelper extends SQLiteOpenHelper {
         values.put(MessageOpenHelper.COLUMN_FROMCHAT, c.getFromWhichChat());
         return database.update(MessageOpenHelper.TABLE_MESSAGE, values, MessageOpenHelper.COLUMN_ID +"=" + c.getmessageId(), null);
     }
+
+    public Message getCustomerById(long rowId)
+    {
+        Cursor cursor=database.query(MessageOpenHelper.TABLE_MESSAGE, allColumns, MessageOpenHelper.COLUMN_ID + "=" +rowId, null, null, null, null);
+        cursor.moveToFirst();
+        if(cursor.getCount()>0)
+        {
+            long id=cursor.getLong(cursor.getColumnIndex(MessageOpenHelper.COLUMN_ID));
+            String msgsaveday=cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_SAVEDAY));
+            String msgsavehour=cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_SAVEHOUR));
+            String message=cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_MESSAGE));
+            String fromwho=cursor.getString(cursor.getColumnIndex(MessageOpenHelper.COLUMN_FROMCHAT));
+            Message c=new Message(id,msgsaveday,msgsavehour,message,fromwho);
+            this.close();
+            return c;
+        }
+
+        return null;
+
+    }
+
 }

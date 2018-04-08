@@ -1,14 +1,20 @@
 package com.example.ailan.sqlitefinalproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -70,6 +76,19 @@ public class MainActivity extends AppCompatActivity
         accountAdapter=new AccountAdapter(this, 0,listOfAccount);
         lv2.setAdapter(accountAdapter);
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // TODO Auto-generated method stub
+                Message c = (Message) messageAdapter.getItem(i); ///added (Message)
+                Toast.makeText(getBaseContext(), c.getMessage() + "touched", Toast.LENGTH_SHORT).show();
+
+                Intent g = new Intent((MainActivity.this), UpdateActivity.class);
+               g .putExtra("rowId", c.getmessageId());
+                startActivityForResult(g,0 );
+            }
+        });
+
 
     }
 
@@ -115,4 +134,71 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        coh.open();
+        switch (item.getItemId()) {
+            case R.id.menu_allcustomers:
+                listOfMessage=coh.getAllmessages();
+                Log.i("filter", "list count is " + listOfMessage.size());
+                refreshMyAdapter();
+                break;
+            case R.id.menu_new:
+                Intent i=new Intent(MainActivity.this,InsertActivity.class);
+                startActivityForResult(i, 1);//Request code 1 is for ------>insert screen
+            default:
+                break;
+        }
+        coh.close();
+
+        return super.onOptionsItemSelected(item);
+
+    }
+    public void refreshMyAdapter()
+    {
+
+        messageAdapter=new MessageAdapter(this,0,listOfMessage);
+        lv.setAdapter(messageAdapter);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode==RESULT_OK)
+        {
+            coh.open();
+            listOfMessage=coh.getAllmessages();
+            refreshMyAdapter();
+            coh.close();
+
+            if(requestCode==0)
+            {
+                Toast.makeText(getBaseContext(), "Database updated", Toast.LENGTH_SHORT).show();
+
+            }
+            else if (requestCode==1)
+            {
+                Toast.makeText(getBaseContext(), "New Customer add to database", Toast.LENGTH_SHORT).show();
+
+            }
+
+
+        }
+    }
+
+
+
 }
