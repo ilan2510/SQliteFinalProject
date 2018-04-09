@@ -84,10 +84,23 @@ public class MainActivity extends AppCompatActivity
                 Toast.makeText(getBaseContext(), c.getMessage() + "touched", Toast.LENGTH_SHORT).show();
 
                 Intent g = new Intent((MainActivity.this), UpdateActivity.class);
-               g .putExtra("rowId", c.getmessageId());
+               g.putExtra("rowId", c.getmessageId());
                 startActivityForResult(g,0 );
             }
         });
+        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // TODO Auto-generated method stub
+                Account c = (Account) accountAdapter.getItem(i); ///added (Message)
+                Toast.makeText(getBaseContext(), c.getFirstName() + "touched", Toast.LENGTH_SHORT).show();
+
+                Intent g = new Intent((MainActivity.this), UpdateActivityacc.class);
+                g.putExtra("rowId", c.getId());
+                startActivityForResult(g,0 );
+            }
+        });
+
 
 
     }
@@ -147,19 +160,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         coh.open();
+        aoh.open();
         switch (item.getItemId()) {
-            case R.id.menu_allcustomers:
+            case R.id.menu_allMessages:
                 listOfMessage=coh.getAllmessages();
                 Log.i("filter", "list count is " + listOfMessage.size());
                 refreshMyAdapter();
+                break;
+            case R.id.menu_acc:
+                Intent d=new Intent(MainActivity.this, InsertActivityacc.class);
+                startActivityForResult(d , 1);
                 break;
             case R.id.menu_new:
                 Intent i=new Intent(MainActivity.this,InsertActivity.class);
                 startActivityForResult(i, 1);//Request code 1 is for ------>insert screen
             default:
                 break;
+
         }
         coh.close();
+        aoh.close();
 
         return super.onOptionsItemSelected(item);
 
@@ -171,6 +191,14 @@ public class MainActivity extends AppCompatActivity
         lv.setAdapter(messageAdapter);
 
     }
+    public void refreshMyAdapteracc()
+    {
+
+        accountAdapter=new AccountAdapter(this,0,listOfAccount);
+        lv2.setAdapter(accountAdapter);
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -180,9 +208,13 @@ public class MainActivity extends AppCompatActivity
         if (resultCode==RESULT_OK)
         {
             coh.open();
+            aoh.open();
             listOfMessage=coh.getAllmessages();
+            listOfAccount=aoh.getAllAccounts();
             refreshMyAdapter();
+            refreshMyAdapteracc();
             coh.close();
+            aoh.close();
 
             if(requestCode==0)
             {

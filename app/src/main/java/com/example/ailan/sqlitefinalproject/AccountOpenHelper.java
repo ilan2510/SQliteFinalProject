@@ -123,7 +123,7 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
     }
 
 
-    public long deleteCustomerByRow(long rowId)
+    public long deleteAccountByRow(long rowId)
     {
         return database.delete(AccountOpenHelper.TABLE_ACCOUNT, AccountOpenHelper.COLUMN_ID + "=" + rowId, null);
     }
@@ -142,6 +142,26 @@ public class AccountOpenHelper extends SQLiteOpenHelper {
         return database.update(AccountOpenHelper.TABLE_ACCOUNT, values, AccountOpenHelper.COLUMN_ID +"=" + c.getId(), null);
 
 
+
+    }
+    public Account getAccountById(long rowId)
+    {
+        Cursor cursor=database.query(AccountOpenHelper.TABLE_ACCOUNT, allColumns, AccountOpenHelper.COLUMN_ID + "=" +rowId, null, null, null, null);
+        cursor.moveToFirst();
+        if(cursor.getCount()>0)
+        {
+            long id=cursor.getLong(cursor.getColumnIndex(AccountOpenHelper.COLUMN_ID));
+            String fname=cursor.getString(cursor.getColumnIndex(AccountOpenHelper.COLUMN_FIRSTNAME));
+            String lname=cursor.getString(cursor.getColumnIndex(AccountOpenHelper.COLUMN_LASTNAME));
+            String displayname=cursor.getString(cursor.getColumnIndex(AccountOpenHelper.COLUMN_DISPLAYNAME));
+            String email=cursor.getString(cursor.getColumnIndex(AccountOpenHelper.COLUMN_EMAIL));
+            String accspecid=cursor.getString(cursor.getColumnIndex(AccountOpenHelper.COLUMN_ACCSPECID));
+            Account c=new Account(id,fname,lname,displayname,email,accspecid);
+            this.close();
+            return c;
+        }
+
+        return null;
 
     }
 }

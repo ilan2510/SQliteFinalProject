@@ -9,30 +9,32 @@
         android:title="setting"
         tools:ignore="AppCompatResource" />
     <item
-        android:id="@+id/menu_allcustomers"
+        android:id="@+id/menu_allMessages"
         android:orderInCategory="100"
         android:showAsAction="never"
         tools:ignore="AppCompatResource"
-        android:title="all customers"/>
-    <item
-        android:id="@+id/menu_cheapcustomers"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="cheapers"
-        tools:ignore="AppCompatResource" />
-    <item
-        android:id="@+id/menu_richcustomers"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        tools:ignore="AppCompatResource"
-        android:title="reachcustomers"/>
+        android:title="all Messages"/>
 
     <item
         android:id="@+id/menu_new"
         android:orderInCategory="100"
         android:showAsAction="never"
         tools:ignore="AppCompatResource"
+        android:title="New message"
+        />
+    <item
+        android:id="@+id/menu_allAccounts"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+        android:title="all Accounts"/>
 
-        android:title="New"/>
+    <item
+        android:id="@+id/menu_acc"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        tools:ignore="AppCompatResource"
+        android:title="New Account"
+        />
 
 </menu>
