@@ -1,7 +1,9 @@
 package com.example.ailan.sqlitefinalproject;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -29,6 +32,10 @@ public class MainActivity extends AppCompatActivity
 
     ListView lv , lv2;
 
+    BroadCastBattery brodcastbattery;
+
+    TextView toastline;
+
     MessageAdapter messageAdapter;
     AccountAdapter accountAdapter;
     @Override
@@ -36,6 +43,8 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        brodcastbattery=new BroadCastBattery();
 
         listOfMessage=new ArrayList<Message>();
         listOfAccount=new ArrayList<Account>();
@@ -45,6 +54,7 @@ public class MainActivity extends AppCompatActivity
 
         lv=(ListView)findViewById(R.id.lv);
         lv2=(ListView)findViewById(R.id.lv2);
+        toastline=(TextView)findViewById(R.id.toastline);
 
         Log.d("Account", "list size is " + listOfAccount.size());
         Log.d("Account", AccountOpenHelper.CREATE_TABLE_ACCOUNT);
@@ -103,6 +113,8 @@ public class MainActivity extends AppCompatActivity
 
 
 
+
+
     }
 
 
@@ -110,11 +122,14 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+        registerReceiver(brodcastbattery,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
     }
     @Override
     protected void onPause() {
         // TODO Auto-generated method stub
         super.onPause();
+
+        unregisterReceiver(brodcastbattery);
     }
 
     public void createMessages()
@@ -229,6 +244,25 @@ public class MainActivity extends AppCompatActivity
 
 
         }
+    }
+
+    private class BroadCastBattery extends BroadcastReceiver
+
+    {
+
+        @Override
+
+        public void onReceive(Context context, Intent intent) {
+
+            int battery = intent.getIntExtra("level",0);
+            toastline.setText("Your phone has " + String.valueOf(battery) + "%");
+//            if (battery == 20)
+//            {
+//                Toast.makeText(getBaseContext(),"You have only 20% left",Toast.LENGTH_LONG).show();
+//            }
+
+        }
+
     }
 
 

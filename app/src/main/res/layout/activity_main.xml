@@ -6,13 +6,13 @@
     >
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="45sp"
+        android:layout_height="31sp"
         android:gravity="center"
-        android:background="#15e6a0"
+        android:background="#6d80b7"
         android:text="DataBase"
         android:textColor="#000000"
         android:layout_gravity="center"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:layout_weight="20"
         />
     <ListView
@@ -27,14 +27,16 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="45sp"
+        android:layout_height="30sp"
         android:layout_gravity="center"
         android:layout_weight="20"
-        android:background="#15e6a0"
+        android:background="#6d80b7"
         android:gravity="center"
-        android:text="DataBase"
+        android:text=""
         android:textColor="#000000"
-        android:textSize="40sp" />
+        android:textSize="30sp"
+        android:id="@+id/toastline"
+        />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="200dp"
